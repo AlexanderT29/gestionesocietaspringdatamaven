@@ -70,4 +70,9 @@ public class ProgettoServiceImpl implements ProgettoService{
     public List<Progetto> getListaDipendentiConRALMAggioreDi(int example) {
         return progettoRepository.getListaDipendentiConRALMAggioreDi(example);
     }
+
+    @Override
+    public List<Progetto> cercaProgettiAnomali() {
+        return progettoRepository.findDistinctByDipendenteSet_Societa_DataChiusuraIsNotNull();
+    }
 }

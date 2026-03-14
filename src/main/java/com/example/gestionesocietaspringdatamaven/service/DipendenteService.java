@@ -26,6 +26,8 @@ public interface DipendenteService {
 
     public void collegaDipendenteAProgetto(Dipendente dipendente, Progetto progetto);
 
+    public void collegaDipendenteAProgettoNoCheck(Dipendente dipendente, Progetto progetto);
+
     public Dipendente findAnzianoInSocietaStoricheSuProgettiLunghi(LocalDate dataLimite, int durataMinima);
 
     public Dipendente findAnzianoInSocietaStoricheSuProgettiLunghiSpring(LocalDate dataLimite, int durataMinima);

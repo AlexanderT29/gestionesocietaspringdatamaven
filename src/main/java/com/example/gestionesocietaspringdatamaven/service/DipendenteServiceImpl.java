@@ -101,4 +101,11 @@ public class DipendenteServiceImpl implements DipendenteService {
     public Dipendente findAnzianoInSocietaStoricheSuProgettiLunghiSpring(LocalDate dataLimite, int durataMinima) {
         return dipendenteRepository.findFirstBySocieta_DataFondazioneBeforeAndProgettoSet_DurataInMesiGreaterThanEqualOrderByDataAssunzioneAsc(dataLimite, durataMinima);
     }
+
+    @Override
+    @Transactional
+    public void collegaDipendenteAProgettoNoCheck(Dipendente dipendente, Progetto progetto) {
+        dipendente.addToProgetti(progetto);
+        dipendenteRepository.save(dipendente);
+    }
 }

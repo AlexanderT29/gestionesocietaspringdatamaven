@@ -317,6 +317,51 @@ public class BatteriaDiTestService {
     }
 
 
+    public void testProgettiAnomali() {
+        System.out.println("testProgettiAnomali ... INIZIO");
+
+        Societa socChiusa = new Societa("Fallita S.R.L.", "Via del Tramonto 1", LocalDate.of(2015, 1, 1), LocalDate.of(2023, 1, 1));
+        societaService.inserisciSocieta(socChiusa);
+
+        Societa socAttiva = new Societa("Viva S.P.A.", "Via dell'Alba 2", LocalDate.of(2020, 1, 1), null);
+        societaService.inserisciSocieta(socAttiva);
+
+        Progetto progAnomalo = new Progetto("Progetto Fantasma", "Cliente X", 12);
+        progettoService.inserisciProgetto(progAnomalo);
+
+        Progetto progRegolare = new Progetto("Progetto Sano", "Cliente Y", 24);
+        progettoService.inserisciProgetto(progRegolare);
+
+        Dipendente dipSfortunato = new Dipendente("Aldo", "Baglio", LocalDate.of(2018, 1, 1), 25000, socChiusa);
+        dipendenteService.inserisciDipendente(dipSfortunato);
+
+        Dipendente dipFortunato = new Dipendente("Giovanni", "Storti", LocalDate.of(2021, 1, 1), 30000, socAttiva);
+        dipendenteService.inserisciDipendente(dipFortunato);
+
+        dipendenteService.collegaDipendenteAProgettoNoCheck(dipSfortunato, progAnomalo);
+        dipendenteService.collegaDipendenteAProgettoNoCheck(dipFortunato, progRegolare);
+
+        List<Progetto> risultati = progettoService.cercaProgettiAnomali();
+
+        if (risultati == null || risultati.isEmpty()) {
+            throw new RuntimeException("test FAILED: Nessun progetto anomalo trovato!");
+        }
+
+        boolean trovatoAnomalo = risultati.stream().anyMatch(p -> p.getId().equals(progAnomalo.getId()));
+        boolean trovatoRegolare = risultati.stream().anyMatch(p -> p.getId().equals(progRegolare.getId()));
+
+        if (!trovatoAnomalo) {
+            throw new RuntimeException("test FAILED: Il progetto anomalo non è stato rilevato!");
+        }
+
+        if (trovatoRegolare) {
+            throw new RuntimeException("test FAILED: Un progetto regolare è finito nella lista degli anomali!");
+        }
+
+        System.out.println("testProgettiAnomali ... PASSED");
+    }
+
+
 
 
 }

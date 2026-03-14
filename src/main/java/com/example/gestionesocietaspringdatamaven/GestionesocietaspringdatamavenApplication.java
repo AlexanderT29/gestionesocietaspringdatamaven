@@ -30,6 +30,7 @@ public class GestionesocietaspringdatamavenApplication implements CommandLineRun
 		batteriaDiTestService.testgetListaSocietaConProgettiDurataMaggioreUnAnno();
 		batteriaDiTestService.testProgettiConRalAltaEJPQL();
 		batteriaDiTestService.testCercaDipendentePiuAnzianoNativaESpring();
+		batteriaDiTestService.testProgettiAnomali();
 
 		System.out.println("################ FINE - PASSED  #################");
 	}

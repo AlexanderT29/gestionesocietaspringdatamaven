@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ProgettoRepository extends CrudRepository<Progetto, Long>, QueryByExampleExecutor<Progetto> {
@@ -19,4 +20,6 @@ public interface ProgettoRepository extends CrudRepository<Progetto, Long>, Quer
             "JOIN dipendente d ON dp.dipendente_id = d.id " +
             "WHERE d.redditoannuolordo >= :example")
     public List<Progetto> getListaDipendentiConRALMAggioreDi(int example);
+
+    public List<Progetto> findDistinctByDipendenteSet_Societa_DataChiusuraIsNotNull();
 }

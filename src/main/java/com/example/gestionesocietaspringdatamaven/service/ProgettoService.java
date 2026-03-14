@@ -23,4 +23,6 @@ public interface ProgettoService {
 
     public List<Progetto> getListaDipendentiConRALMAggioreDi(int example);
 
+    public List<Progetto> cercaProgettiAnomali();
+
 }
