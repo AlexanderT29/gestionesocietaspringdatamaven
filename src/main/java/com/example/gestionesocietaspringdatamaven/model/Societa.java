@@ -20,7 +20,6 @@ public class Societa {
     @Column(name = "indirizzo")
     private String indirizzo;
 
-    @CreationTimestamp
     @Column(name = "datafondazione")
     private LocalDate dataFondazione;
 

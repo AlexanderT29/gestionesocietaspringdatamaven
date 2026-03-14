@@ -19,14 +19,13 @@ public class Dipendente {
     private String nome;
     @Column(name = "cognome")
     private String cognome;
-    @CreationTimestamp
     @Column(name = "dataassunzione")
     private LocalDate dataAssunzione;
     @Column(name = "redditoannuolordo")
     private int redditoAnnuoLordo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "societa_id")
+    @JoinColumn(name = "societa_id", nullable = false)
     private Societa societa = null;
 
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE }, fetch = FetchType.LAZY)

@@ -1,5 +1,6 @@
 package com.example.gestionesocietaspringdatamaven.service;
 
+import com.example.gestionesocietaspringdatamaven.model.Dipendente;
 import com.example.gestionesocietaspringdatamaven.model.Societa;
 import com.example.gestionesocietaspringdatamaven.repository.SocietaRepository;
 import jakarta.persistence.EntityManager;
@@ -8,10 +9,13 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
+@Transactional(readOnly = true)
 public class SocietaServiceImpl  implements  SocietaService{
 
     @Autowired
@@ -31,6 +35,7 @@ public class SocietaServiceImpl  implements  SocietaService{
     }
 
     @Override
+    @Transactional
     public void inserisciSocieta(Societa societaInput) {
         if (societaRepository.findByRagioneSociale(societaInput.getRagioneSociale()) != null){
             throw new RuntimeException("Societa già inserita!");
@@ -39,6 +44,7 @@ public class SocietaServiceImpl  implements  SocietaService{
     }
 
     @Override
+    @Transactional
     public void rimuovi(Long idSocieta) {
         Societa societaDaRImuovere = societaRepository.findById(idSocieta).orElse(null);
         if (societaDaRImuovere == null || societaDaRImuovere.getDipendenti().size() != 0){
@@ -48,6 +54,7 @@ public class SocietaServiceImpl  implements  SocietaService{
     }
 
     @Override
+    @Transactional
     public void aggiorna(Societa societaInput) {
         societaRepository.save(societaInput);
     }
@@ -79,4 +86,31 @@ public class SocietaServiceImpl  implements  SocietaService{
 
         return typedQuery.getResultList();
     }
+
+    @Override
+    public void removeConEccezione(Societa societa) {
+        societaRepository.delete(societa);
+        throw new RuntimeException("Eccezione di prova transazione");
+    }
+
+    @Override
+    public List<Dipendente> getListaDipendentiDaSocieta(Long societaId) {
+        if(societaId == null){
+            throw new RuntimeException("Input non valido!");
+        }
+
+        Societa societa = societaRepository.findWithDipendentiById(societaId);
+        if (societa == null) {
+            throw new RuntimeException("Società non trovata con ID: " + societaId);
+        }
+
+        return societa.getDipendenti();
+    }
+
+    @Override
+    public List<Societa> getListaSocietaConProgettiDurataMaggioreUnAnno() {
+        return societaRepository.getListSocietaWithDurataProgettoSuperioreAnno();
+    }
+
+
 }
