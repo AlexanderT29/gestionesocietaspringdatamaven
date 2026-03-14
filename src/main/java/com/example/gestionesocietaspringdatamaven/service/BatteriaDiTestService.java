@@ -42,12 +42,16 @@ public class BatteriaDiTestService {
         System.out.println("testFindByExample ... inizio");
         Societa societa1 = new Societa("VGroup", "via lagopatria ì42", LocalDate.of(2021, 11, 20), null);
         societaService.inserisciSocieta(societa1);
+
         Societa societa2 = new Societa("Gigi Group", "via gomma 43", LocalDate.of(2017, 10, 19), LocalDate.of(2020, 5, 20));
         societaService.inserisciSocieta(societa2);
+
         Societa societa3 = new Societa("Gattini Group", "via fusa 29", LocalDate.of(2000, 10, 5), LocalDate.of(2024, 4, 12));
         societaService.inserisciSocieta(societa3);
+
         Societa example = new Societa("Group", null, null, null);
         List<Societa> result = societaService.findByExample(example);
+
         if(result.size() != 3){
             throw new RuntimeException("testFindByExample failed: societa non trovate");
         }
@@ -58,12 +62,9 @@ public class BatteriaDiTestService {
     public void testInserisciDipendente(){
         System.out.println("testInserisciDipendente ... INIZIO");
 
-        // 1. CREAZIONE PRIMA SOCIETÀ
         Societa techSolutions = new Societa("Tech Solutions S.R.L.", "Via Roma 10, Milano", LocalDate.of(2010, 5, 12), null);
-        // Usiamo il tuo SocietaServiceImpl per l'inserimento
         societaService.inserisciSocieta(techSolutions);
 
-        // Inserimento 4 dipendenti per Tech Solutions
         Dipendente dipendente1 = new Dipendente("Mario", "Rossi", LocalDate.of(2015, 1, 10), 35000, techSolutions);
         if(dipendente1.getId() != null){
             throw new RuntimeException("testInserisciDipendente faile: transient object con id valorizzato");
@@ -358,7 +359,42 @@ public class BatteriaDiTestService {
             throw new RuntimeException("test FAILED: Un progetto regolare è finito nella lista degli anomali!");
         }
 
-        System.out.println("testProgettiAnomali ... PASSED");
+        System.out.println("testProgettiAnomali ... OK");
+    }
+
+    public void testSocietaAnomale() {
+        System.out.println("testSocietaAnomale ... INIZIO");
+
+        Societa socAnomala = new Societa("Time Travel S.R.L.", "Via del Futuro 1", LocalDate.of(2020, 1, 1), null);
+        societaService.inserisciSocieta(socAnomala);
+
+        Societa socRegolare = new Societa("Azienda Normale S.P.A.", "Via del Presente 2", LocalDate.of(2015, 1, 1), null);
+        societaService.inserisciSocieta(socRegolare);
+
+        Dipendente dipAnomalo = new Dipendente("Marty", "McFly", LocalDate.of(2018, 5, 15), 30000, socAnomala);
+        dipendenteService.inserisciDipendente(dipAnomalo);
+
+        Dipendente dipRegolare = new Dipendente("Mario", "Rossi", LocalDate.of(2017, 3, 10), 25000, socRegolare);
+        dipendenteService.inserisciDipendente(dipRegolare);
+
+
+        List<Societa> risultati = societaService.cercaSocietaAnomale();
+
+        if (risultati == null || risultati.isEmpty()) {
+            throw new RuntimeException("test FAILED: Nessuna società anomala trovata!");
+        }
+
+        boolean trovataAnomala = risultati.stream().anyMatch(s -> s.getId().equals(socAnomala.getId()));
+        boolean trovataRegolare = risultati.stream().anyMatch(s -> s.getId().equals(socRegolare.getId()));
+
+        if (!trovataAnomala) {
+            throw new RuntimeException("test FAILED: La società anomala non è stata rilevata!");
+        }
+        if (trovataRegolare) {
+            throw new RuntimeException("test FAILED: Una società regolare è finita per sbaglio nella lista delle anomale!");
+        }
+
+        System.out.println("testSocietaAnomale ... OK\n");
     }
 
 

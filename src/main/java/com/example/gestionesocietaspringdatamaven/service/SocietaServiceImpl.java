@@ -112,5 +112,8 @@ public class SocietaServiceImpl  implements  SocietaService{
         return societaRepository.getListSocietaWithDurataProgettoSuperioreAnno();
     }
 
-
+    @Override
+    public List<Societa> cercaSocietaAnomale() {
+        return societaRepository.findSocietaConDipendentiAnomali();
+    }
 }

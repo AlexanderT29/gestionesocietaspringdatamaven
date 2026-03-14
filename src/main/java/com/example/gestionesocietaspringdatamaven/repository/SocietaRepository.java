@@ -4,6 +4,7 @@ import com.example.gestionesocietaspringdatamaven.model.Dipendente;
 import com.example.gestionesocietaspringdatamaven.model.Societa;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.NativeQuery;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.QueryByExampleExecutor;
 
@@ -23,6 +24,9 @@ public interface SocietaRepository extends CrudRepository<Societa, Long>, QueryB
             "JOIN progetto p ON dp.progetto_id = p.id " +
             "WHERE p.duratainmesi > 12")
     public List<Societa> getListSocietaWithDurataProgettoSuperioreAnno();
+
+    @Query("SELECT DISTINCT s FROM Societa s JOIN s.dipendenti d WHERE d.dataAssunzione < s.dataFondazione")
+    List<Societa> findSocietaConDipendentiAnomali();
 
 
 }

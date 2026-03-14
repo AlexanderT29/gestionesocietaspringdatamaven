@@ -27,4 +27,6 @@ public interface SocietaService {
 
     public List<Societa> getListaSocietaConProgettiDurataMaggioreUnAnno();
 
+    List<Societa> cercaSocietaAnomale();
+
     }

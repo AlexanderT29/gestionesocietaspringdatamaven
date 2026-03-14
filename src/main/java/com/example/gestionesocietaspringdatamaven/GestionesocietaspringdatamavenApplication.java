@@ -31,6 +31,7 @@ public class GestionesocietaspringdatamavenApplication implements CommandLineRun
 		batteriaDiTestService.testProgettiConRalAltaEJPQL();
 		batteriaDiTestService.testCercaDipendentePiuAnzianoNativaESpring();
 		batteriaDiTestService.testProgettiAnomali();
+		batteriaDiTestService.testSocietaAnomale();
 
 		System.out.println("################ FINE - PASSED  #################");
 	}
